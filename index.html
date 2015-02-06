@@ -1,0 +1,49 @@
+<html>
+    <head>
+        <title>Emscripten Box2D demo</title>
+        
+        <script type="text/javascript" src="Box2D_v2.2.1_min.js"></script>
+        <script type="text/javascript" src="helpers/embox2d-helpers.js"></script>
+        <script type="text/javascript" src="helpers/embox2d-html5canvas-debugDraw.js"></script>
+        <script type="text/javascript" src="embox2d-html5canvas-testbed.js"></script>
+        
+        <script type="text/javascript" src="car.js"></script>
+        
+        <script type="text/javascript">  
+            var Box2D;
+            if (!Box2D) Box2D = (typeof Box2D !== 'undefined' ? Box2D : null) || Module;
+            window.onload = function() {
+                using(Box2D, "b2.+")
+                init();
+                changeTest();
+                animate();
+            };        
+        </script>
+        
+    </head>
+    <body>
+        <div style="text-align:center">
+            <h2>Emscripten Box2D demo</h2>
+            <!--
+                If you change the size of the canvas, you'll also need to change 
+                the value of 'viewCenterPixel' in embox2d-html5canvas-testbed.js
+            -->
+            <div style="margin:auto;width:640px;padding:2px;border:1px solid #888;text-align:left">
+
+                <canvas id="canvas" width="640" height="480" tabindex='1'></canvas>
+                <div style="width:636px;padding:2px;background-color:#ddd">
+                    <div style="text-align:center">
+                        <button id="reloadButton" onclick="resetScene();">Reset</button>
+                        <button id="pauseButton" onclick="pause();">Pause</button>
+                        <button id="stepButton" onclick="step();">Single step</button>
+                        (Keyboard: R, P, S)<br>
+                        Test: <select id="testSelection" onchange="changeTest();">
+                            <option value="embox2dTest_car">Car (use j/k to move)</option>                   
+                        </select>
+                    </div>
+                </div>
+            </div>        
+        </div>
+    </body>
+</html>
+
