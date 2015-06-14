@@ -1,38 +1,38 @@
 (function() {
 
   // Init som useful stuff for easier access (don't need 'em all)
-  var   b2Vec2 = Box2D.Common.Math.b2Vec2,
-        b2AABB = Box2D.Collision.b2AABB,
-        b2BodyDef = Box2D.Dynamics.b2BodyDef,
-        b2Body = Box2D.Dynamics.b2Body,
-        b2FixtureDef = Box2D.Dynamics.b2FixtureDef,
-        b2Fixture = Box2D.Dynamics.b2Fixture,
-        b2World = Box2D.Dynamics.b2World,
-        b2MassData = Box2D.Collision.Shapes.b2MassData,
-        b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape,
-        b2CircleShape = Box2D.Collision.Shapes.b2CircleShape,
-        b2DebugDraw = Box2D.Dynamics.b2DebugDraw,
-        b2RevoluteJointDef = Box2D.Dynamics.Joints.b2RevoluteJointDef,
-        b2MouseJointDef =  Box2D.Dynamics.Joints.b2MouseJointDef;
+  var b2Vec2 = Box2D.Common.Math.b2Vec2,
+    b2AABB = Box2D.Collision.b2AABB,
+    b2BodyDef = Box2D.Dynamics.b2BodyDef,
+    b2Body = Box2D.Dynamics.b2Body,
+    b2FixtureDef = Box2D.Dynamics.b2FixtureDef,
+    b2Fixture = Box2D.Dynamics.b2Fixture,
+    b2World = Box2D.Dynamics.b2World,
+    b2MassData = Box2D.Collision.Shapes.b2MassData,
+    b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape,
+    b2CircleShape = Box2D.Collision.Shapes.b2CircleShape,
+    b2DebugDraw = Box2D.Dynamics.b2DebugDraw,
+    b2RevoluteJointDef = Box2D.Dynamics.Joints.b2RevoluteJointDef,
+    b2MouseJointDef = Box2D.Dynamics.Joints.b2MouseJointDef;
 
   // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
-  window.requestAnimFrame = (function(){
-    return  window.requestAnimationFrame       ||
-            window.webkitRequestAnimationFrame ||
-            window.mozRequestAnimationFrame    ||
-            window.oRequestAnimationFrame      ||
-            window.msRequestAnimationFrame     ||
-            function(/* function */ callback, /* DOMElement */ element){
-              window.setTimeout(callback, 1000 / 60);
-            };
+  window.requestAnimFrame = (function() {
+    return window.requestAnimationFrame ||
+      window.webkitRequestAnimationFrame ||
+      window.mozRequestAnimationFrame ||
+      window.oRequestAnimationFrame ||
+      window.msRequestAnimationFrame ||
+      function( /* function */ callback, /* DOMElement */ element) {
+        window.setTimeout(callback, 1000 / 60);
+      };
   })();
 
   var SCALE,
-      canvas,
-      ctx,
-      world,
-      fixDef,
-      shapes = {};
+    canvas,
+    ctx,
+    world,
+    fixDef,
+    shapes = {};
 
   var debug = false;
   var WALLS = .5;
@@ -51,11 +51,21 @@
 
       this.callbacks();
 
-      setTimeout(function() { add.random(); }, 0);
-      setTimeout(function() { add.random(); }, 100);
-      setTimeout(function() { add.random(); }, 500);
-      setTimeout(function() { add.random(); }, 700);
-      setTimeout(function() { add.random(); }, 1000);
+      setTimeout(function() {
+        add.random();
+      }, 0);
+      setTimeout(function() {
+        add.random();
+      }, 100);
+      setTimeout(function() {
+        add.random();
+      }, 500);
+      setTimeout(function() {
+        add.random();
+      }, 700);
+      setTimeout(function() {
+        add.random();
+      }, 1000);
 
       // On my signal: Unleash hell.
       (function hell() {
@@ -119,21 +129,21 @@
   var add = {
     random: function(options) {
       options = options || {};
-      if (Math.random() < 0.5){
+      if (Math.random() < 0.5) {
         this.circle(options);
       } else {
         this.box(options);
       }
     },
     circle: function(options) {
-      options.radius = 0.5 + Math.random()*1;
+      options.radius = 0.5 + Math.random() * 1;
       var shape = new Circle(options);
       shapes[shape.id] = shape;
       box2d.addToWorld(shape);
     },
     box: function(options) {
-      options.width = options.width || 0.5 + Math.random()*2;
-      options.height = options.height || 0.5 + Math.random()*2;
+      options.width = options.width || 0.5 + Math.random() * 2;
+      options.height = options.height || 0.5 + Math.random() * 2;
       var shape = new Box(options);
       shapes[shape.id] = shape;
       box2d.addToWorld(shape);
@@ -155,8 +165,8 @@
     create: {
       world: function() {
         world = new b2World(
-          new b2Vec2(0, 10)    //gravity
-          , false                 //allow sleep
+          new b2Vec2(0, 10) //gravity
+          , false //allow sleep
         );
 
         if (debug) {
@@ -213,7 +223,7 @@
       world.Step(stepRate, 10, 10);
       world.ClearForces();
     },
-    update: function () {
+    update: function() {
       for (var b = world.GetBodyList(); b; b = b.m_next) {
         if (b.IsActive() && typeof b.GetUserData() !== 'undefined' && b.GetUserData() != null) {
           shapes[b.GetUserData()].update(box2d.get.bodySpec(b));
@@ -233,7 +243,7 @@
     randomColor: function() {
       var letters = '0123456789ABCDEF'.split(''),
         color = '#';
-      for (var i = 0; i < 6; i++ ) {
+      for (var i = 0; i < 6; i++) {
         color += letters[Math.round(Math.random() * 15)];
       }
       return color;
@@ -244,11 +254,14 @@
 
   var Shape = function(v) {
     this.id = Math.round(Math.random() * 1000000);
-    this.x = v.x || Math.random()*23 + 1;
+    this.x = v.x || Math.random() * 23 + 1;
     this.y = v.y || 0;
     this.angle = 0;
     this.color = helpers.randomColor();
-    this.center = { x: null, y: null };
+    this.center = {
+      x: null,
+      y: null
+    };
     this.isStatic = v.isStatic || false;
 
     this.update = function(options) {
@@ -281,8 +294,8 @@
 
   var Box = function(options) {
     Shape.call(this, options);
-    this.width = options.width || Math.random()*2+0.5;
-    this.height = options.height || Math.random()*2+0.5;
+    this.width = options.width || Math.random() * 2 + 0.5;
+    this.height = options.height || Math.random() * 2 + 0.5;
 
     this.draw = function() {
       ctx.save();
@@ -291,8 +304,7 @@
       ctx.translate(-(this.x) * SCALE, -(this.y) * SCALE);
       ctx.fillStyle = this.color;
       ctx.fillRect(
-        (this.x-(this.width / 2)) * SCALE,
-        (this.y-(this.height / 2)) * SCALE,
+        (this.x - (this.width / 2)) * SCALE, (this.y - (this.height / 2)) * SCALE,
         this.width * SCALE,
         this.height * SCALE
       );
