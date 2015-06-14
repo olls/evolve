@@ -1,4 +1,4 @@
-    
+
 var DEGTORAD = 0.0174532925199432957;
 var RADTODEG = 57.295779513082320876;
 
@@ -8,7 +8,7 @@ var MOVE_RIGHT =    0x02;
 var embox2dTest_car = function() {
     this.rearWheelJoint = null;
     this.moveFlags = 0;
-    this.carBody = null;    
+    this.carBody = null;
 }
 
 embox2dTest_car.prototype.setNiceViewCenter = function() {
@@ -17,9 +17,9 @@ embox2dTest_car.prototype.setNiceViewCenter = function() {
 }
 
 embox2dTest_car.prototype.setup = function() {
-    
+
     var ground = world.CreateBody( new b2BodyDef() );
-    
+
     //ground
     {
         var shape = new b2EdgeShape();
@@ -44,7 +44,7 @@ embox2dTest_car.prototype.setup = function() {
                 var y2 = hs[i];
                 shape.Set( new b2Vec2(x, y1), new b2Vec2(x + dx, y2));
                 ground.CreateFixture(fd);
-                
+
                 y1 = y2;
                 x += dx;
         }
@@ -78,7 +78,7 @@ embox2dTest_car.prototype.setup = function() {
         x += 40.0;
         shape.Set(new b2Vec2(x, 0.0), new b2Vec2(x, 20.0));
         ground.CreateFixture(fd);
-    }       
+    }
 
     // Teeter
     {
@@ -101,7 +101,7 @@ embox2dTest_car.prototype.setup = function() {
 
         body.ApplyAngularImpulse(100.0, true);
     }
-    
+
     // Bridge
     {
         var N = 20;
@@ -120,7 +120,7 @@ embox2dTest_car.prototype.setup = function() {
         // bd.set_type(b2_dynamicBody);
         bd.set_type(Module.b2_dynamicBody);
         for (var i = 0; i < N; ++i)
-        {                    
+        {
             bd.set_position( new b2Vec2(161.0 + 2.0 * i, -0.125) );
             var body = world.CreateBody(bd);
             body.CreateFixture(fd);
@@ -136,7 +136,7 @@ embox2dTest_car.prototype.setup = function() {
         jd.Initialize(prevBody, ground, anchor);
         world.CreateJoint(jd);
     }
-    
+
     // Boxes
     {
         var box = new b2PolygonShape();
@@ -151,7 +151,7 @@ embox2dTest_car.prototype.setup = function() {
             world.CreateBody(bd).CreateFixture(box, 0.5);
         }
     }
-    
+
     //car
     {
         var carVerts = [];
@@ -162,34 +162,34 @@ embox2dTest_car.prototype.setup = function() {
         carVerts.push( new b2Vec2(-1.15, 0.9) );
         carVerts.push( new b2Vec2(-1.5, 0.2) );
         var chassisShape = new createPolygonShape(carVerts);
-        
+
         var circleShape = new b2CircleShape();
         circleShape.set_m_radius(0.4);
-    
+
         var bd = new b2BodyDef();
         // bd.set_type(b2_dynamicBody);
         bd.set_type(Module.b2_dynamicBody);
         bd.set_position( new b2Vec2(0,1) );
         this.carBody = world.CreateBody(bd);
         this.carBody.CreateFixture(chassisShape, 1);
-        
+
         var fd = new b2FixtureDef();
         fd.set_shape(circleShape);
         fd.set_density(1.0);
         fd.set_friction(0.9);
-        
+
         bd.set_position( new b2Vec2(-1.0, 0.35) );
         var wheelBody1 = world.CreateBody(bd);
         wheelBody1.CreateFixture(fd);
 
         bd.set_position( new b2Vec2(1.0, 0.4) );
         var wheelBody2 = world.CreateBody(bd);
-        wheelBody2.CreateFixture(fd);                
-        
+        wheelBody2.CreateFixture(fd);
+
         var m_hz = 4.0;
         var m_zeta = 0.7;
         var m_speed = 50.0;
-        
+
         var jd = new b2WheelJointDef();
         var axis = new b2Vec2(0.0, 1.0);
 
@@ -241,7 +241,7 @@ embox2dTest_car.prototype.onKeyDown = function(canvas, evt) {
     }
 }
 
-embox2dTest_car.prototype.onKeyUp = function(canvas, evt) {    
+embox2dTest_car.prototype.onKeyUp = function(canvas, evt) {
     if ( evt.keyCode == 74 ) {//j
         this.moveFlags &= ~MOVE_LEFT;
         this.updateMotorSpeed();
