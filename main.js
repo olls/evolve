@@ -104,6 +104,7 @@ function randomEntity(id) {
 
 var canvas = document.getElementById("cars");
 var ctx = canvas.getContext("2d");
+var redraw = false;
 
 var world = {};
 for (var i = 0; i < 20; i++) {
@@ -125,10 +126,13 @@ on(document, 'webkitvisibilitychange', function() {
 });
 
 function loop() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  for (var id in world) {
-    var entity = world[id];
-    entity.draw(ctx);
+  if (redraw) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (var id in world) {
+      var entity = world[id];
+      entity.draw(ctx);
+    }
+    redraw = false;
   }
   requestAnimFrame(loop);
 }
@@ -136,9 +140,13 @@ function loop() {
 worker.onmessage = function(e) {
   switch (e.data.cmd) {
     case 'world':
+      redraw = false;
       for (var id in e.data.msg) {
         var entity = world[id];
-        if (entity) entity.update(e.data.msg[id]);
+        if (entity) {
+          entity.update(e.data.msg[id]);
+          redraw = true;
+        }
       }
       break;
     case 'ready':
