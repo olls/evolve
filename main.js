@@ -111,7 +111,7 @@ for (var i = 0; i < 20; i++) {
 }
 
 var worker = new Worker('physics.js');
-worker.postMessage({'cmd': 'start', 'msg': {'width': canvas.width, 'height': canvas.height}});
+worker.postMessage({'cmd': 'start', 'msg': {'width': canvas.width / SCALE, 'height': canvas.height / SCALE}});
 worker.postMessage({'cmd': 'bodies', 'msg': world});
 
 on(document, 'webkitvisibilitychange', function() {

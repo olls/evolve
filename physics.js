@@ -39,26 +39,24 @@ function bTest(intervalRate, adaptive, size) {
     true // Allow sleep
   );
 
-  var SCALE = 30;
-
   this.fixDef = new b2FixtureDef;
   this.fixDef.density = 1.0;
   this.fixDef.friction = 0.5;
   this.fixDef.restitution = 0.2;
 
+  // One bodyDef for all to save resources
   this.bodyDef = new b2BodyDef;
 
   // Create ground
   this.bodyDef.type = b2Body.b2_staticBody;
 
-  // Positions the center of the object (not upper left!)
-  this.bodyDef.position.x = this.width / 2 / SCALE;
-  this.bodyDef.position.y = this.height / SCALE;
+  // Positions the centre of the object (not upper left!)
+  this.bodyDef.position.x = this.width / 2;
+  this.bodyDef.position.y = this.height;
 
   this.fixDef.shape = new b2PolygonShape;
 
-  // Half width, half height. eg actual height here is 1 unit
-  this.fixDef.shape.SetAsBox((600 / SCALE) / 2, (10 / SCALE) / 2);
+  this.fixDef.shape.SetAsBox(this.width / 2, 0);
   this.world.CreateBody(this.bodyDef).CreateFixture(this.fixDef);
 }
 
@@ -69,8 +67,8 @@ bTest.prototype.update = function() {
   this.world.Step(
     stepRate, // Frame-rate
     10, // Velocity iterations
-    10 // Position iteratTions
-  );T
+    10 // Position iterations
+  );
   this.world.ClearForces();
   this.sendUpdate();
 }
