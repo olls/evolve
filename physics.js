@@ -39,26 +39,47 @@ function bTest(intervalRate, adaptive, size) {
     true // Allow sleep
   );
 
+  // One fixDef / bodyDef for all to save resources
   this.fixDef = new b2FixtureDef;
   this.fixDef.density = 1.0;
   this.fixDef.friction = 0.5;
   this.fixDef.restitution = 0.2;
 
-  // One bodyDef for all to save resources
   this.bodyDef = new b2BodyDef;
 
   // Create ground
+  this.create_st_box(this.width / 2,
+                     this.height,
+                     this.width / 2,
+                     0);
+  // Create left wall
+  this.create_st_box(0,
+                     this.height / 2,
+                     0,
+                     this.height / 2);
+  // Create right wall
+  this.create_st_box(this.width,
+                     this.height / 2,
+                     0,
+                     this.height / 2);
+  // Create ceiling
+  this.create_st_box(this.width / 2,
+                     0,
+                     this.width / 2,
+                     0);
+}
+
+bTest.prototype.create_st_box = function(x, y, width, height) {
   this.bodyDef.type = b2Body.b2_staticBody;
 
-  // Positions the centre of the object (not upper left!)
-  this.bodyDef.position.x = this.width / 2;
-  this.bodyDef.position.y = this.height;
+  this.bodyDef.position.x = x;
+  this.bodyDef.position.y = y;
 
   this.fixDef.shape = new b2PolygonShape;
 
-  this.fixDef.shape.SetAsBox(this.width / 2, 0);
+  this.fixDef.shape.SetAsBox(width, height);
   this.world.CreateBody(this.bodyDef).CreateFixture(this.fixDef);
-}
+};
 
 bTest.prototype.update = function() {
   var now = Date.now();
